@@ -41,3 +41,24 @@ print('Pass 2a', X2)
 # Multiply by Wkn factors
 X2 = X2 * np.array([1, 1, Wkn[0], Wkn[2], 1, 1, Wkn[0], Wkn[2]])
 print('Pass 2b', X2)
+
+# Step 3: 2 elements combos
+X3 = np.zeros_like(X2)  # This directly creates a complex array
+X3[0] = X2[0] + X2[1]
+X3[1] = X2[0] - X2[1]
+X3[2] = X2[2] + X2[3]
+X3[3] = X2[2] - X2[3]
+X3[4] = X2[4] + X2[5]
+X3[5] = X2[4] - X2[5]
+X3[6] = X2[6] + X2[7]
+X3[7] = X2[6] - X2[7]
+
+# Bit reverse
+# binary_repr(...)[::-1] returns the binary number reversed
+# int(..., base=2) converts back to decimal
+br = [int(np.binary_repr(x, width=3)[::-1], base=2) for x in range(8)]
+X3 = X3[br]
+
+# Check result
+print('FFT      ', X3)
+print('FFT numpy', np.fft.fft(xw))
